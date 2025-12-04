@@ -26,6 +26,10 @@ This command will output the visibility status in JSON format:
 A convenience script is provided to check repository visibility:
 
 ```bash
+# Make the script executable (first time only)
+chmod +x check_visibility.sh
+
+# Run the script
 ./check_visibility.sh [OWNER/REPO]
 ```
 
@@ -36,6 +40,9 @@ A convenience script is provided to check repository visibility:
 
 # Check the current repository (when run from within the repo)
 ./check_visibility.sh
+
+# Alternative: Run with bash (doesn't require execute permission)
+bash check_visibility.sh snehamm-bot/ANN_Classification_Churn
 ```
 
 **Note:** You need to have the GitHub CLI (`gh`) installed and authenticated. Visit https://cli.github.com/ for installation instructions.
