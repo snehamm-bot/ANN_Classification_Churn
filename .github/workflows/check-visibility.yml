@@ -1,0 +1,42 @@
+name: Check Repository Visibility
+
+on:
+  workflow_dispatch:  # Allow manual trigger
+  push:
+    branches: [ main, master ]
+
+jobs:
+  check-visibility:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Check repository visibility using GitHub CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Checking repository visibility..."
+          echo "Repository: ${{ github.repository }}"
+          
+          # Run the gh repo view command to get visibility
+          VISIBILITY=$(gh repo view ${{ github.repository }} --json visibility -q .visibility)
+          
+          echo "Visibility: $VISIBILITY"
+          
+          # Display the result
+          if [ "$VISIBILITY" = "PUBLIC" ]; then
+            echo "✓ This repository is publicly accessible"
+          elif [ "$VISIBILITY" = "PRIVATE" ]; then
+            echo "✓ This repository is private"
+          else
+            echo "⚠ Unknown visibility status"
+          fi
+      
+      - name: Run visibility check script
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Running check_visibility.sh script..."
+          ./check_visibility.sh ${{ github.repository }}
